@@ -19,14 +19,15 @@ connectToDb((err) => {
 
 //routes
 app.get("/books", (req, res) => {
-  //   db.collection("books")
-  //     .find()
-  //     .toArray()
-  //     .then((books) => {
-  //       res.json(books);
-  //     })
-  //     .catch((err) => {
-  //       res.json(err);
-  //     });
-  res.json("Welcome to the api");
+  let books = [];
+  db.collection("books")
+    .find()
+    .sort({ author: 1 })
+    .forEach((book) => books.push(book))
+    .then(() => {
+      res.status(200).json(books);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "An error occurred" });
+    });
 });
